@@ -21,16 +21,19 @@ const Main = () => {
   const lenis = useLenis();
 
   useEffect(() => {
-    lenis?.stop();
-  }, [lenis])
-
-  useLayoutEffect(() => {
     if (progress === 100) {
       setFadeOut(true);
+      // Start lenis only after loading is complete
       lenis?.start();
     }
   }, [progress, lenis]);
 
+  // Optional: Handle cleanup if needed when unmounting
+  useEffect(() => {
+    return () => {
+      lenis?.stop(); // Stop lenis on unmount, if necessary
+    };
+  }, [lenis]);
   return (
     <ReactLenis root>
       <div className={`initial-loading-screen ${fadeOut ? "fade-out" : ""}`} >
